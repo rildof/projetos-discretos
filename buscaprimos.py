@@ -19,13 +19,12 @@ def miller(d, n):
 
     return False
 
-def fermat(n, k):
-    for i in range(k):
-        a = random.randint(2, n - 2)
+def fermat(n):
+    a = random.randint(2, n - 2)
 
-        # Fermat's little theorem
-        if pow(a, n - 1, n) != 1:
-            return False
+    # Fermat's little theorem
+    if pow(a, n - 1, n) != 1:
+        return False
 
     return True
 
@@ -43,7 +42,6 @@ def isPrime(n, k):
 
     # Iterate given number of 'k' times
     for i in range(k):
-        if not miller(d, n) and not fermat(n, k):
-            return False
-
-    return True
+        if miller(d, n) and fermat(n):
+            return True
+    return False
