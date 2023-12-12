@@ -1,4 +1,5 @@
-from buscaprimos import isPrime
+from buscaprimos import isPrimeMillerRabin
+from cod_texto import text2int, int2text
 import random
 import sys
 import sympy
@@ -21,13 +22,13 @@ class RSAsystem:
     # y=mensagem criptografada
     # y cong x(mensagem)^e mod n
     def encrypt(self, x):
-        return [pow(i, self.e, self.n) for i in x]
+        return pow(x, self.e, self.n)
 
     # 3)
     # Mostre que qualquer texto claro m pode ser recuperado
     # a partir do criptograma y e a chave privada (d, n).
     def decrypt(self, y):
-        return [pow(j, self.d, self.n) for j in y]
+        return pow(y, self.d, self.n)
 
     def calc_e(self):
         e = 2
@@ -36,34 +37,31 @@ class RSAsystem:
         return e
 
     def sign(self, x):
-        return [pow(i,self.d,self.n) for i in x]
+        return pow(x,self.d,self.n)
 
     def verify_sign(self, ass):
-        return [pow(i,self.e,self.n) for i in ass]
+        return pow(ass,self.e,self.n)
 
 # 1)
 # Procura-se dois
 # números primos, p e q, independentes, de tamanho 1024
 # bits ou maior;
+def generate_random_prime(bits):
+    while True:
+        num = random.getrandbits(bits)
+        num |= (1 << 0)  # Garante que o número seja ímpar e do tamanho correto
+        print(num)
+        if isPrimeMillerRabin(num, 5):
+            return num
+
 def get_primes():
-    n1 = pow(2, 1024)
-    n2 = pow(2, 1025)
-    randprime1 = sympy.randprime(n1, n2)
-    randprime2 = sympy.randprime(n1, n2)
-    return randprime1, randprime2
+    min_bits = 1024
+    max_bits = 2048
 
-def phi(n):
-    result = 1
-    for i in range(2, n):
-        if (sympy.gcd(i, n) == 1):
-            result += 1
-    return result
+    p = generate_random_prime(random.randint(min_bits, max_bits))
+    q = generate_random_prime(random.randint(min_bits, max_bits))
 
-def txt_to_ascii(txt):
-    return [ord(i) for i in txt]
-def ascii_to_txt(ascii):
-    a = [chr(i) for i in ascii]; return ''.join(a)
-
+    return p, q
 
 if __name__ == "__main__":
     p, q = get_primes()
@@ -75,8 +73,8 @@ if __name__ == "__main__":
     f.write('('+str(rsa.e)+' , '+str(rsa.n)+')')
     g.write('('+str(rsa.d)+' , '+str(rsa.n)+')')
 
-    x = 'Prova foi adiada'
-    x = txt_to_ascii(x)
+    x = 'texto de teste'
+    x = text2int(x)
 
     y = rsa.encrypt(x)
 

@@ -1,47 +1,33 @@
 import random
 
-def miller(d, n):
-    a = 2 + random.randint(1, n - 4)
+def isPrimeMillerRabin(n, k):
 
-    x = pow(a, d, n)
+    # Implementation uses the Miller-Rabin Primality Test
+    # The optimal number of rounds for this test is 40
+    # See http://stackoverflow.com/questions/6325576/how-many-iterations-of-rabin-miller-should-i-use-for-cryptographic-safe-primes
+    # for justification
 
-    if (x == 1 or x == n - 1):
+    # If number is even, it's a composite number
+
+    if n == 2:
         return True
 
-    while (d != n - 1):
-        x = (x * x) % n
-        d *= 2
+    if n % 2 == 0:
+        return False
 
-        if (x == 1):
+    r, s = 0, n - 1
+    while s % 2 == 0:
+        r += 1
+        s //= 2
+    for _ in range(k):
+        a = random.randrange(2, n - 1)
+        x = pow(a, s, n)
+        if x == 1 or x == n - 1:
+            continue
+        for _ in range(r - 1):
+            x = pow(x, 2, n)
+            if x == n - 1:
+                break
+        else:
             return False
-        if (x == n - 1):
-            return True
-
-    return False
-
-def fermat(n):
-    a = random.randint(2, n - 2)
-
-    # Fermat's little theorem
-    if pow(a, n - 1, n) != 1:
-        return False
-
     return True
-
-def isPrime(n, k):
-    if n == 4:
-        return False
-    elif n == 2 or n == 3:
-        return True
-
-    # Find r such that n =
-    # 2^d * r + 1 for some r >= 1
-    d = n - 1
-    while (d % 2 == 0):
-        d //= 2
-
-    # Iterate given number of 'k' times
-    for i in range(k):
-        if miller(d, n) and fermat(n):
-            return True
-    return False
