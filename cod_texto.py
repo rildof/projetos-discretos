@@ -7,7 +7,7 @@ Autor: Prof. Gilson Jeronimo
 Codificador de Texto
 """
 
-
+"testando o codificador"
 def text2int(texto):
     number = 0;
     for i in range(len(texto)):

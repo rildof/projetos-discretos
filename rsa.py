@@ -2,8 +2,6 @@ from buscaprimos import isPrimeMillerRabin
 from cod_texto import text2int, int2text
 import random
 import sys
-import sympy
-
 
 class RSAsystem:
 
@@ -32,7 +30,7 @@ class RSAsystem:
 
     def calc_e(self):
         e = 2
-        while (sympy.gcd(e, self.phi_n) != 1):
+        while (mdc(e, self.phi_n) != 1):
             e += 1
         return e
 
@@ -63,6 +61,9 @@ def get_primes():
 
     return p, q
 
+def mdc(a, b):
+    return a if not b else mdc(b, a % b)
+
 if __name__ == "__main__":
     p, q = get_primes()
     rsa = RSAsystem(p, q)
@@ -79,7 +80,7 @@ if __name__ == "__main__":
     y = rsa.encrypt(x)
 
     print('Texto claro: ',x)
-    print('Texto encriptografado: ',y)
+    print('Texto encriptografado: ',int2text(y))
     print('------------------------------------------------------------------------------')
 
     #print(ascii_to_txt([i for i in y]))

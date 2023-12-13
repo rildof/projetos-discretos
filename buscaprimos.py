@@ -31,3 +31,9 @@ def isPrimeMillerRabin(n, k):
         else:
             return False
     return True
+
+def next_prime(n):
+    next_number = n + 3
+    while not isPrimeMillerRabin(next_number, 5):
+        next_number += 3
+    return next_number
