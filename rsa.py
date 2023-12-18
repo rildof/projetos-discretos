@@ -1,6 +1,7 @@
 from buscaprimos import isPrimeMillerRabin
 from cod_texto import text2int, int2text
 import random
+from aritModular import addmod, mulmod, expmod, invmod
 import sys
 
 class RSAsystem:
@@ -11,7 +12,7 @@ class RSAsystem:
         self.n = p*q
         self.phi_n = (p-1)*(q-1)
         self.e = self.calc_e()
-        self.d = pow(self.e,-1, self.phi_n)
+        self.d = invmod(self.e, self.phi_n)
 
     # 2)
     # Implemente a função que aplica a chave (e, n) em um
@@ -20,13 +21,13 @@ class RSAsystem:
     # y=mensagem criptografada
     # y cong x(mensagem)^e mod n
     def encrypt(self, x):
-        return pow(x, self.e, self.n)
+        return expmod(x, self.e, self.n)
 
     # 3)
     # Mostre que qualquer texto claro m pode ser recuperado
     # a partir do criptograma y e a chave privada (d, n).
     def decrypt(self, y):
-        return pow(y, self.d, self.n)
+        return expmod(y, self.d, self.n)
 
     def calc_e(self):
         e = 2
@@ -35,10 +36,10 @@ class RSAsystem:
         return e
 
     def sign(self, x):
-        return pow(x,self.d,self.n)
+        return expmod(x,self.d,self.n)
 
     def verify_sign(self, ass):
-        return pow(ass,self.e,self.n)
+        return expmod(ass,self.e,self.n)
 
 # 1)
 # Procura-se dois
@@ -71,8 +72,8 @@ if __name__ == "__main__":
     f = open('public_key','w')
     g = open('private_key', 'w')
 
-    f.write('('+str(rsa.e)+' , '+str(rsa.n)+')')
-    g.write('('+str(rsa.d)+' , '+str(rsa.n)+')')
+    f.write('('+str(rsa.e)+' , '+str(rsa.n)+')' + '\n')
+    g.write('('+str(rsa.d)+' , '+str(rsa.n)+')' + '\n')
 
     x = 'texto de teste'
     x = text2int(x)
