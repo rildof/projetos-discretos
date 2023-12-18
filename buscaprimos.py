@@ -1,14 +1,7 @@
 import random
 
+
 def isPrimeMillerRabin(n, k):
-
-    # Implementation uses the Miller-Rabin Primality Test
-    # The optimal number of rounds for this test is 40
-    # See http://stackoverflow.com/questions/6325576/how-many-iterations-of-rabin-miller-should-i-use-for-cryptographic-safe-primes
-    # for justification
-
-    # If number is even, it's a composite number
-
     if n == 2:
         return True
 
@@ -32,8 +25,14 @@ def isPrimeMillerRabin(n, k):
             return False
     return True
 
+
 def next_prime(n):
-    next_number = n + 3
+    if n % 2 == 0:
+        next_number = n + 1
+    else:
+        next_number = n + 2
+
     while not isPrimeMillerRabin(next_number, 5):
-        next_number += 3
+        next_number += 2
+
     return next_number
