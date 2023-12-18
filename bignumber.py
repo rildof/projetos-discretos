@@ -3,7 +3,8 @@ class bignumber:
         self.num = num
         self.b = self.binário()
       
-
+    def getNumber(self):
+        return self.num
     def binário(self):
         b = 0
         num=self.num

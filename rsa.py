@@ -2,13 +2,14 @@ from buscaprimos import isPrimeMillerRabin
 from cod_texto import text2int, int2text
 import random
 from aritModular import addmod, mulmod, expmod, invmod
+from bignumber import bignumber
 import sys
 
 class RSAsystem:
 
     def __init__(self, p, q):
-        self.p = p
-        self.q = q
+        self.p = bignumber(p)
+        self.q = bignumber(q)
         self.n = p*q
         self.phi_n = (p-1)*(q-1)
         self.e = self.calc_e()
@@ -77,10 +78,10 @@ if __name__ == "__main__":
 
     x = 'texto de teste'
     x = text2int(x)
+    x = bignumber(x)
+    y = rsa.encrypt(x.getNumber())
 
-    y = rsa.encrypt(x)
-
-    print('Texto claro: ',x)
+    print('Texto claro: ',int2text(x.getNumber()))
     print('Texto encriptografado: ',int2text(y))
     print('------------------------------------------------------------------------------')
 
@@ -93,8 +94,8 @@ if __name__ == "__main__":
     #Recebe [Texto criptografado(x) , assinatura(ass)]
     #usando a chave pública, descriptografa-se a assinatura = pow(ass, e, n)
     #Se for igual à mensagem descriptografada, deu bom
-    ass = rsa.sign(x)
+    ass = rsa.sign(x.getNumber())
     ass_dec = rsa.verify_sign(ass)
     print("Texto assinado: ", ass)
-    print("Texto assinado descriptografado: ", ass_dec)
+    print("Texto assinado descriptografado: ", int2text(ass_dec))
 
