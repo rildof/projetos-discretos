@@ -7,11 +7,11 @@ import sys
 
 class RSAsystem:
 
-    def __init__(self, p, q):
-        self.p = bignumber(p)
-        self.q = bignumber(q)
-        self.n = p*q
-        self.phi_n = (p-1)*(q-1)
+    def __init__(self):
+        self.p, self.q = self.get_primes()
+        self.p, self.q = bignumber(self.p) , bignumber(self.q)
+        self.n = self.p.getNumber() * self.q.getNumber()
+        self.phi_n = ( self.p.getNumber() - 1 )*( self.q.getNumber() - 1 )
         self.e = self.calc_e()
         self.d = invmod(self.e, self.phi_n)
 
@@ -42,6 +42,14 @@ class RSAsystem:
     def verify_sign(self, ass):
         return expmod(ass,self.e,self.n)
 
+    def get_primes(self):
+        min_bits = 1024
+        max_bits = 2048
+
+        p = generate_random_prime(random.randint(min_bits, max_bits))
+        q = generate_random_prime(random.randint(min_bits, max_bits))
+
+        return p, q
 # 1)
 # Procura-se dois
 # números primos, p e q, independentes, de tamanho 1024
@@ -54,21 +62,12 @@ def generate_random_prime(bits):
         if isPrimeMillerRabin(num, 5):
             return num
 
-def get_primes():
-    min_bits = 1024
-    max_bits = 2048
-
-    p = generate_random_prime(random.randint(min_bits, max_bits))
-    q = generate_random_prime(random.randint(min_bits, max_bits))
-
-    return p, q
-
 def mdc(a, b):
     return a if not b else mdc(b, a % b)
 
 if __name__ == "__main__":
-    p, q = get_primes()
-    rsa = RSAsystem(p, q)
+
+    rsa = RSAsystem()
 
     f = open('public_key','w')
     g = open('private_key', 'w')

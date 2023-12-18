@@ -1,4 +1,4 @@
-from rsa import RSAsystem, get_primes
+from rsa import RSAsystem
 from comunicador import MQTTCommunicator
 import logging
 import keyboard
@@ -7,8 +7,7 @@ import time
 class Cliente(RSAsystem):
 
     def __init__(self, nome):
-        p, q = get_primes()
-        super().__init__(p, q)
+        super().__init__()
         self.comunicador = MQTTCommunicator(nome, 'broker.hivemq.com')
         self.clients = {}
         self.current_e = 0
