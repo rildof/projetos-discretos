@@ -15,20 +15,15 @@ class RSAsystem:
         self.e = self.calc_e()
         self.d = invmod(self.e, self.phi_n)
 
-    # 2)
-    # Implemente a função que aplica a chave (e, n) em um
-    # “bignumber” m qualquer. Note que essa mesma função é
-    # utilizada para decifrar criptogramas e para assinar textos
-    # y=mensagem criptografada
-    # y cong x(mensagem)^e mod n
-    def encrypt(self, x):
-        return expmod(x, self.e, self.n)
+    def encrypt(self, x, e = None, n = None):
+        e = e or self.e
+        n = n or self.n 
+        return expmod(x, e, n)
 
-    # 3)
-    # Mostre que qualquer texto claro m pode ser recuperado
-    # a partir do criptograma y e a chave privada (d, n).
-    def decrypt(self, y):
-        return expmod(y, self.d, self.n)
+    def decrypt(self, y, d = None, n = None):
+        d = d or self.d
+        n = n or self.n
+        return expmod(y, d, n)
 
     def calc_e(self):
         e = 2
@@ -50,10 +45,7 @@ class RSAsystem:
         q = generate_random_prime(random.randint(min_bits, max_bits))
 
         return p, q
-# 1)
-# Procura-se dois
-# números primos, p e q, independentes, de tamanho 1024
-# bits ou maior;
+
 def generate_random_prime(bits):
     while True:
         num = random.getrandbits(bits)
@@ -84,15 +76,6 @@ if __name__ == "__main__":
     print('Texto encriptografado: ',int2text(y))
     print('------------------------------------------------------------------------------')
 
-    #print(ascii_to_txt([i for i in y]))
-
-    #decrypted_x = [decrypt(i,d,n) for i in y]
-    #print(ascii_to_txt(decrypted_x))
-
-    #5)
-    #Recebe [Texto criptografado(x) , assinatura(ass)]
-    #usando a chave pública, descriptografa-se a assinatura = pow(ass, e, n)
-    #Se for igual à mensagem descriptografada, deu bom
     ass = rsa.sign(x.getNumber())
     ass_dec = rsa.verify_sign(ass)
     print("Texto assinado: ", ass)
