@@ -50,7 +50,6 @@ def generate_random_prime(bits):
     while True:
         num = random.getrandbits(bits)
         num |= (1 << 0)  # Garante que o número seja ímpar e do tamanho correto
-        print(num)
         if isPrimeMillerRabin(num, 5):
             return num
 
@@ -74,6 +73,7 @@ if __name__ == "__main__":
 
     print('Texto claro: ',int2text(x.getNumber()))
     print('Texto encriptografado: ',int2text(y))
+    print('Texto descriptografado: ', int2text(rsa.decrypt(y)))
     print('------------------------------------------------------------------------------')
 
     ass = rsa.sign(x.getNumber())
